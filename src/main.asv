@@ -111,7 +111,6 @@ modelJAP=arima(2,5,1);
 test(modelJAP,trainJAP(:,1));
 
 %% PROC_FORCAST
-% cn
 cnest=[];
 cnf=[];
 cnymse=[];
@@ -119,13 +118,11 @@ for i=1:6
     cnest=estimate(modelcn,trainCN(:,i));
     [cnf(:,i),cnymse(:,i)]=fcdata(cnest,4,trainCN(:,i));
 end
-% us
 usest=estimate(modelUSA,trainUSA);
 usf=forecast(usest,4,trainUSA);
-% jp
 jpest=estimate(modelJAP,trainJAP);
 jpf=forecast(jpest,4,trainJAP);
-% data_write
+
 fcoutput=table(cnf,usf,jpf);
 fcoutput = splitvars(fcoutput, 'cnf');
 fcoutput.Properties.VariableNames={'Tianjin','Beijing','Shanghai','Chongqing','Hangzhou','Chengdu','US','Japan'};
