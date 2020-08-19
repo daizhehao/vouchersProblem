@@ -73,9 +73,9 @@ title("diff4");
 xlabel('t');
 %取阶数为2，做自相关和偏相关检验
 figure(6)
-autocorr(diff1USA(:,1));
+autocorr(diff2USA(:,1));
 figure(7)
-parcorr(diff1USA(:,1));
+parcorr(diff2USA(:,1));
 modelUSA=arima(2,12,1);
 test(modelUSA,trainUSA(:,1));
 
