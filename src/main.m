@@ -129,6 +129,17 @@ jpf=forecast(jpest,4,trainJAP);
 fcoutput=table(cnf,usf,jpf);
 fcoutput = splitvars(fcoutput, 'cnf');
 fcoutput.Properties.VariableNames={'Tianjin','Beijing','Shanghai','Chongqing','Hangzhou','Chengdu','US','Japan'};
-writetable("../output/forcast.csv",fcoutput);
+writetable(fcoutput,"../output/forcast.csv");
 
 %% PROC_ETA
+currentDataCN = gdpCN(17:20,2:7);
+currentDataUS = table2array(gdpUSA(17:20,2));
+currentDataJP = table2array(gdpJAP(17:20,2));
+
+deltaCN = currentDataCN - table2array(fcoutput(:,1:6));
+deltaUS = currentDataUS - table2array(fcoutput(:,7));
+deltaJP = currentDataJP - table2array(fcoutput(:,8));
+delta = table(deltaCN,deltaUS,deltaJP);
+fcoutput = splitvars(delta, 'deltaCN');
+delta.Properties.VariableNames={'Tianjin','Beijing','Shanghai','Chongqing','Hangzhou','Chengdu','US','Japan'};
+writetable(delta,"../output/deltas.csv");
