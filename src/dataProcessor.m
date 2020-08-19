@@ -7,7 +7,6 @@ function data = dataProcessor(filePath)
 % enter the data's path and should return a dataset formated as a '.mat' file.
 % - filepath : path of file.
 % - data: should return to __main__() function a table named by 'data'.
-filePath="./data/gdpCN.csv";
 fprintf('GENERATING REQUIRED DATA...\n');
 opts = detectImportOptions(filePath);
 opts.Encoding = 'UTF-8';
