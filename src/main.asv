@@ -45,8 +45,8 @@ figure(2)
 autocorr(diff1CN(:,1));
 figure(3)
 parcorr(diff1CN(:,1));
-modelcn=arima(1,7,0);
-test(modelcn,trainCN(:,1));
+modelcn=arima(1,12,10);
+test(modelcn,gdpCN(:,2));
 
 %% US_MODEL
 trainUSA= table2array(gdpUSA(1:16,2));
@@ -71,13 +71,13 @@ subplot(2,2,4);
 plot(diff4USA);
 title("diff4");
 xlabel('t');
-%取阶数为2，做自相关和偏相关检验
+%取阶数为1，做自相关和偏相关检验
 figure(6)
-autocorr(diff2USA(:,1));
+autocorr(diff1USA(:,1));
 figure(7)
-parcorr(diff2USA(:,1));
-modelUSA=arima(2,12,1);
-test(modelUSA,trainUSA(:,1));
+parcorr(diff1USA(:,1));
+modelUSA=arima(1,13,11);
+test(modelUSA,table2array(gdpUSA(:,2)));
 
 %% JAP_MODEL
 trainJAP= table2array(gdpJAP(1:16,2));
@@ -107,8 +107,8 @@ figure(10)
 autocorr(diff1JAP(:,1));
 figure(11)
 parcorr(diff1JAP(:,1));
-modelJAP=arima(2,5,1);
-test(modelJAP,trainJAP(:,1));
+modelJAP=arima(1,11,12);
+test(modelJAP,table2array(gdpJAP(:,2)));
 
 %% PROC_FORCAST
 % cn
@@ -116,14 +116,14 @@ cnest=[];
 cnf=[];
 cnymse=[];
 for i=1:6
-    cnest=estimate(modelcn,trainCN(:,i));
+    cnest=estimate(modelcn,gdpCN(:,i));
     [cnf(:,i),cnymse(:,i)]=fcdata(cnest,4,trainCN(:,i));
 end
 % us
-usest=estimate(modelUSA,trainUSA);
-usf=forecast(usest,4,trainUSA);
+usest=estimate(modelUSA,table2array(gdpUSA(:,2)));
+usf=forecast(usest,4,);
 % jp
-jpest=estimate(modelJAP,trainJAP);
+jpest=estimate(modelJAP,table2array(gdpJAP(:,2)));
 jpf=forecast(jpest,4,trainJAP);
 % data_write
 fcoutput=table(cnf,usf,jpf);
@@ -133,12 +133,13 @@ writetable(fcoutput,"../output/forcast.csv");
 
 %% PROC_ETA
 currentDataCN = gdpCN(17:20,2:7);
-currentDataUS = gdpUSA(17:20,2);
-currentDataJP = gdpJAP(17:20,2);
+currentDataUS = table2array(gdpUSA(17:20,2));
+currentDataJP = table2array(gdpJAP(17:20,2));
 
 deltaCN = currentDataCN - table2array(fcoutput(:,1:6));
 deltaUS = currentDataUS - table2array(fcoutput(:,7));
 deltaJP = currentDataJP - table2array(fcoutput(:,8));
 delta = table(deltaCN,deltaUS,deltaJP);
+fcoutput = splitvars(delta, 'deltaCN');
 delta.Properties.VariableNames={'Tianjin','Beijing','Shanghai','Chongqing','Hangzhou','Chengdu','US','Japan'};
-writetable(delta,"../output/forcast.csv");
+writetable(delta,"../output/deltas.csv");
