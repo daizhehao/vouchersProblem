@@ -129,4 +129,6 @@ jpf=forecast(jpest,4,trainJAP);
 fcoutput=table(cnf,usf,jpf);
 fcoutput = splitvars(fcoutput, 'cnf');
 fcoutput.Properties.VariableNames={'Tianjin','Beijing','Shanghai','Chongqing','Hangzhou','Chengdu','US','Japan'};
-writetable("../data/forcast.csv",fcoutput);
+writetable("../output/forcast.csv",fcoutput);
+
+%% PROC_ETA
