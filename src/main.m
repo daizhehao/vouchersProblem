@@ -80,3 +80,32 @@ modelUSA=arima(2,12,1);
 test(modelUSA,trainUSA(:,1));
 
 %% JAP_MODEL
+trainJAP= table2array(gdpJAP(1:16,2));
+diff1JAP=diff(trainJAP,1);
+diff2JAP=diff(trainJAP,2);
+diff3JAP=diff(trainJAP,3);
+diff4JAP=diff(trainJAP,4);
+figure(9);
+subplot(2,2,1);
+plot(diff1JAP);
+title("diff1");
+xlabel('t');
+subplot(2,2,2);
+plot(diff2JAP);
+title("diff2");
+xlabel('t');
+subplot(2,2,3);
+plot(diff3JAP);
+title("diff3");
+xlabel('t');
+subplot(2,2,4);
+plot(diff4JAP);
+title("diff4");
+xlabel('t');
+%取阶数为1，做自相关和偏相关检验
+figure(10)
+autocorr(diff1JAP(:,1));
+figure(11)
+parcorr(diff1JAP(:,1));
+modelJAP=arima(2,5,1);
+test(modelJAP,trainJAP(:,1));
